@@ -1,18 +1,15 @@
 # -*- coding:UTF-8 -*-
 import re
 
-# category pattern <a class="CategoryTreeLabel  CategoryTreeLabelNs14 CategoryTreeLabelCategory" href="/wiki/Category:%E5%8C%96%E5%AD%A6%E5%B0%8F%E4%BD%9C%E5%93%81">化学小作品</a>
-
-# page pattern
-
 patternCategory = re.compile(r'<a class=\"CategoryTreeLabel  CategoryTreeLabelNs14 CategoryTreeLabelCategory\" href=\"(.+?)\">(.+?)</a>')
 
-patternPage = re.compile(r'<li><a href=\"(.+?)\" title=\"(.+?)\">(.+?)</a></li>')
+patternPage = re.compile(r'<li><a href=\"(.+?)\" title=\".+?\">(.+?)</a></li>')
 
 filetest = open('testres', 'w')
 
 def href_parser(html):
     # to parse link from html string
+    # html is a str contains html from wiki
     # list_category contains the category's link and the txt
     # list_page contains the page's link, title and the txt
     list_category = patternCategory.findall(html)
@@ -32,7 +29,7 @@ def href_parser(html):
         filetest.write(eachres[2] + '\n')
     '''
     list_page = patternPage.findall(html)
-    # 0.url  1.title  2.txt     namely,[1] == [2]
+    # 0.url  1.txt
     list_page.pop() # the last one is unuseful
     '''
     for each_ul in list_page:
@@ -52,6 +49,8 @@ if __name__ == '__main__':
     [listCategory, listPage] = href_parser(lineHtml)
     print listCategory.__len__()
     print listPage.__len__()
+    print listCategory
+    print listPage
     #print listHref
 
 
