@@ -2,6 +2,7 @@
 import urllib
 import urllib2
 import Queue
+import os
 from HerfParser import href_parser
 from HtmlToLine import html_to_line
 
@@ -53,10 +54,13 @@ if __name__ == '__main__':
     # test
     queueCategory = Queue.Queue(maxsize = 0) # infinite
     fileUrlPath = open('path', 'w')
-    fileError = open('Error', 'w')
+    fileDownloadError = open('DownloadError', 'w')
+    fileWriteError = open('WriteError', 'w')
     setVisitedUrl = set()
     queueCategory.put(urlRoot)
-
+    pathStorage = './storage/'
+    if not os.path.exists(pathStorage):
+        os.mkdir(pathStorage)
     while( not queueCategory.empty() ):
         url = queueCategory.get()
         page = download_html(urlWikiHome + url)
@@ -81,12 +85,16 @@ if __name__ == '__main__':
                 try:
                     strPage = download_html(urlWikiHome + eachPage[0])
                 except:
-                    fileError.write(urlWikiHome + eachPage[0] + '\n')
+                    fileDownloadError.write(urlWikiHome + eachPage[0] + '\n')
                     continue
                 fileUrlPath.write(url + '\t' + eachPage[0] + '\n')
-                fileTemp = open(eachPage[0][6:], 'w')
-                fileTemp.write(strPage)
-                fileTemp.close()
+                try:
+                    fileTemp = open(fileStorage + eachPage[0][6:], 'w')
+                    fileTemp.write(strPage)
+                    fileTemp.close()
+                except:
+                    fileWriteError.write(eachPage[0][6:] + '\n')
+
 
         for eachCategory in listCategory:
             if eachCategory[0] in setVisitedUrl:
@@ -97,5 +105,6 @@ if __name__ == '__main__':
                 fileUrlPath.write(url + '\t' + eachCategory[0] + '\n')
 
     fileUrlPath.close()
-    fileError.close()
+    fileDownloadError.close()
+    fileWriteError.close()
 
