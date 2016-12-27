@@ -109,7 +109,7 @@ if __name__ == '__main__':
                 except Exception as e:
                     print e
                     fileWriteError.write(eachPage[0][6:] + '\n')
-                    fileWriteErrot.write(str(e) + '\n')
+                    fileWriteError.write(str(e) + '\n')
                     continue
 
 
