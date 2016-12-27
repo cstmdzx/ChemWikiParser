@@ -5,7 +5,7 @@ patternCategory = re.compile(r'<a class=\"CategoryTreeLabel  CategoryTreeLabelNs
 
 patternPage = re.compile(r'<li><a href=\"(.+?)\" title=\".+?\">(.+?)</a></li>')
 
-filetest = open('testres', 'w')
+# filetest = open('testres', 'w')
 
 def href_parser(html):
     # to parse link from html string
@@ -13,6 +13,8 @@ def href_parser(html):
     # list_category contains the category's link and the txt
     # list_page contains the page's link, title and the txt
     list_category = patternCategory.findall(html)
+    # filetest.write(html)
+    # filetest.close()
     # 0.url  1.txt
     # count = 0
     '''
