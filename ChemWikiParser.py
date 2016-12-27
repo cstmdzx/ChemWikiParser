@@ -3,6 +3,7 @@ import urllib
 import urllib2
 import Queue
 import os
+import sys
 from HerfParser import href_parser
 from HtmlToLine import html_to_line
 
@@ -84,6 +85,8 @@ if __name__ == '__main__':
                 print urlWikiHome + eachPage[0]
                 try:
                     strPage = download_html(urlWikiHome + eachPage[0])
+                except KeyboardInterrupt:
+                    sys.exit(0)
                 except:
                     fileDownloadError.write(urlWikiHome + eachPage[0] + '\n')
                     continue
@@ -92,6 +95,8 @@ if __name__ == '__main__':
                     fileTemp = open(fileStorage + eachPage[0][6:], 'w')
                     fileTemp.write(strPage)
                     fileTemp.close()
+                except KeyboardInterrupt:
+                    sys.exit(0)
                 except:
                     fileWriteError.write(eachPage[0][6:] + '\n')
 
