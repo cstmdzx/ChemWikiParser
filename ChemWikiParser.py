@@ -21,7 +21,6 @@ from HtmlToLine import html_to_line
 #opener = urllib2.build_opener(proxy_support)
 #urllib2.install_opener(opener)
 
-fileError = open('Error', 'w')
 
 # def download_html(url, url_header):
 def download_html(url):
@@ -45,15 +44,16 @@ if __name__ == '__main__':
     'Cache-Control':'max-age=0',
     'Referer':'None'}
     '''
-    # urlRoot = '/wiki/Category:%E5%8C%96%E5%AD%A6'
-    urlRoot = '/wiki/Category:Chemistry'
-    # urlWikiHome = 'https://zh.wikipedia.org'
-    urlWikiHome = 'https://en.wikipedia.org'
+    urlRoot = '/wiki/Category:%E5%8C%96%E5%AD%A6'
+    # urlRoot = '/wiki/Category:Chemistry'
+    urlWikiHome = 'https://zh.wikipedia.org'
+    # urlWikiHome = 'https://en.wikipedia.org'
     # print urlRoot
 
     # test
     queueCategory = Queue.Queue(maxsize = 0) # infinite
     fileUrlPath = open('path', 'w')
+    fileError = open('Error', 'w')
     setVisitedUrl = set()
     queueCategory.put(urlRoot)
 
@@ -72,6 +72,7 @@ if __name__ == '__main__':
 
         [listCategory, listPage] = href_parser(linePage)
 
+        '''
         for eachPage in listPage:
             if eachPage[0] in setVisitedUrl:
                 continue
@@ -87,14 +88,16 @@ if __name__ == '__main__':
                 fileTemp = open(eachPage[0][6:], 'w')
                 fileTemp.write(strPage)
                 fileTemp.close()
+        '''
 
         for eachCategory in listCategory:
             if eachCategory[0] in setVisitedUrl:
                 continue
             else:
+                print urlWikiHome + eachCategory[0]
                 queueCategory.put(eachCategory[0])  # add to visited
                 fileUrlPath.write(url + '\t' + eachCategory[0] + '\n')
 
     fileUrlPath.close()
-
+    fileError.close()
 
