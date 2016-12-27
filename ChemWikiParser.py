@@ -4,6 +4,7 @@ import urllib2
 import Queue
 import os
 import sys
+import time
 from HerfParser import href_parser
 from HtmlToLine import html_to_line
 
@@ -46,10 +47,10 @@ if __name__ == '__main__':
     'Cache-Control':'max-age=0',
     'Referer':'None'}
     '''
-    urlRoot = '/wiki/Category:%E5%8C%96%E5%AD%A6'
-    # urlRoot = '/wiki/Category:Chemistry'
-    urlWikiHome = 'https://zh.wikipedia.org'
-    # urlWikiHome = 'https://en.wikipedia.org'
+    #urlRoot = '/wiki/Category:%E5%8C%96%E5%AD%A6'
+    urlRoot = '/wiki/Category:Chemistry'
+    # urlWikiHome = 'https://zh.wikipedia.org'
+    urlWikiHome = 'https://en.wikipedia.org'
     # print urlRoot
 
     # test
@@ -60,9 +61,11 @@ if __name__ == '__main__':
     setVisitedUrl = set()
     queueCategory.put(urlRoot)
     pathStorage = './storage/'
+    intMaxSize = 10000
+    intCount = 0
     if not os.path.exists(pathStorage):
         os.mkdir(pathStorage)
-    while( not queueCategory.empty() ):
+    while( intCount < intMaxSize and not queueCategory.empty() ):
         url = queueCategory.get()
         page = download_html(urlWikiHome + url)
         '''
@@ -82,30 +85,39 @@ if __name__ == '__main__':
                 continue
             else:
                 setVisitedUrl.add(eachPage[0])  # add to visited
-                print urlWikiHome + eachPage[0]
+                print str(time.time()) + ':' + urlWikiHome + eachPage[0]
+
                 try:
                     strPage = download_html(urlWikiHome + eachPage[0])
                 except KeyboardInterrupt:
                     sys.exit(0)
-                except:
+                except Exception as e:
+                    print e
                     fileDownloadError.write(urlWikiHome + eachPage[0] + '\n')
+                    fileDownloadError.write(str(e) + '\n')
                     continue
                 fileUrlPath.write(url + '\t' + eachPage[0] + '\n')
+
                 try:
-                    fileTemp = open(fileStorage + eachPage[0][6:], 'w')
+                    fileTemp = open(pathStorage + eachPage[0][6:], 'w')
                     fileTemp.write(strPage)
+                    intCount += 1
                     fileTemp.close()
+                    print (intCount)
                 except KeyboardInterrupt:
                     sys.exit(0)
-                except:
+                except Exception as e:
+                    print e
                     fileWriteError.write(eachPage[0][6:] + '\n')
+                    fileWriteErrot.write(str(e) + '\n')
+                    continue
 
 
         for eachCategory in listCategory:
             if eachCategory[0] in setVisitedUrl:
                 continue
             else:
-                print urlWikiHome + eachCategory[0]
+                print str(time.time()) + ':' + urlWikiHome + eachCategory[0]
                 queueCategory.put(eachCategory[0])  # add to visited
                 fileUrlPath.write(url + '\t' + eachCategory[0] + '\n')
 
