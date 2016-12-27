@@ -72,7 +72,6 @@ if __name__ == '__main__':
 
         [listCategory, listPage] = href_parser(linePage)
 
-        '''
         for eachPage in listPage:
             if eachPage[0] in setVisitedUrl:
                 continue
@@ -88,7 +87,6 @@ if __name__ == '__main__':
                 fileTemp = open(eachPage[0][6:], 'w')
                 fileTemp.write(strPage)
                 fileTemp.close()
-        '''
 
         for eachCategory in listCategory:
             if eachCategory[0] in setVisitedUrl:
