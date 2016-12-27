@@ -47,10 +47,10 @@ if __name__ == '__main__':
     'Cache-Control':'max-age=0',
     'Referer':'None'}
     '''
-    #urlRoot = '/wiki/Category:%E5%8C%96%E5%AD%A6'
-    urlRoot = '/wiki/Category:Chemistry'
-    # urlWikiHome = 'https://zh.wikipedia.org'
-    urlWikiHome = 'https://en.wikipedia.org'
+    urlRoot = '/wiki/Category:%E5%8C%96%E5%AD%A6'
+    # urlRoot = '/wiki/Category:Chemistry'
+    urlWikiHome = 'https://zh.wikipedia.org'
+    # urlWikiHome = 'https://en.wikipedia.org'
     # print urlRoot
 
     # test
